@@ -4,13 +4,7 @@
   <% if content_for?(:head) %>
     <%= yield :head %>
   <% else %>
-    <title>
-    <% if controller.controller_name == "items" && controller.action_name == 'show' %>
-    <%= @item.title %> - monolist
-    <% else %>
-    Monolist
-    <% end %>
-    </title>
+    <title>Monolist</title>
   <% end %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>

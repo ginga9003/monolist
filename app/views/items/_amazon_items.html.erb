@@ -4,7 +4,6 @@
       <div class="item-box">
         <div class="image">
           <div class="img-wrap">
-            <% #TODO 商品画像 %>
             <% unless item.get('LargeImage/URL').blank? %>
               <% image_url = item.get('LargeImage/URL') %>
             <% else %>
@@ -15,7 +14,6 @@
         </div>
         <div class="detail">
           <p class="title">
-            <% #TODO 商品タイトル %>
             <%= item.get('ItemAttributes/Title') %>
           </p>
         </div>

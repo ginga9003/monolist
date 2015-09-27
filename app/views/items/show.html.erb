@@ -1,22 +1,20 @@
 <% content_for :head do %>
-  <title><%= current_user.name %> - monolist</title>
-  <meta name="description" content="<%= current_user.name %>のモノページ。Hanakoの欲しいモノ、持ってるモノを表示しています。" />
+  <title><%= @item.title %> - monolist</title>
+  <meta name="description" content="<%= @item.title %>のモノページ。Hanakoの欲しいモノ、持ってるモノを表示しています。" />
 <% end %>
 <div class="container">
   <div class="container-inner inner-sm clearfix">
     <div class="item-single-main">
       <div class="image">
         <div class="img-wrap">
-          <% #TODO 商品イメージ %>
-          <% if !@item.large_image.blank? %>
-          <%= image_tag(@item.large_image , alt: @item.title) %>
+          <% unless @item.large_image.blank? %>
+            <%= image_tag(@item.large_image , alt: @item.title) %>
           <% else %>
-          <%= image_tag("no-image.png" , alt: @item.title) %>
+            <%= image_tag("no-image.png" , alt: @item.title) %>
           <% end %>
         </div>
       </div>
       <div class="title">
-        <% #TODO 商品タイトル %>
         <%= @item.title %>
       </div>
       <%= render 'action' , item: @item %>
@@ -25,20 +23,25 @@
       <div class="side-box">
         <h4 class="side-box-title">Haveしたユーザー</h4>
         <div class="side-box-body">
-          <% # TODO Haveしたユーザー一覧 %>
-          <% @item.have_users.each do |have| %>
+          <% @item.have_users.each do |have_user| %>
+            <%= link_to have_user do %>
+            <%= gravatar_for have_user, size: 20 %>
+            <% end %>
           <% end %>
         </div>
       </div>
       <div class="side-box">
         <h4 class="side-box-title">Wantしたユーザー</h4>
         <div class="side-box-body">
-          <% # TODO Wantしたユーザー一覧 %>
+          <% @item.want_users.each do |want_user| %>
+            <%= link_to want_user do %>
+            <%= gravatar_for want_user, size: 20 %>
+            <% end %>
+          <% end %>
         </div>
       </div>
       <div class="text-center">
-        <% #TODO 正しいリンク先に %>
-        <%= link_to(image_tag("amazon-button.png", { alt: "Amazon詳細ページへ", target: "_blank" }), @item.detail_page_url) %>
+        <%= link_to(image_tag("amazon-button.png", { alt: "Amazon詳細ページへ" }), @item.detail_page_url, { target: "_blank" }) %>
       </div>
     </div>
   </div>
