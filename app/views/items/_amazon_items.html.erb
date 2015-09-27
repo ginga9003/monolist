@@ -14,15 +14,38 @@
             仮タイトル
           </p>
         </div>
+        <% amazon_item = nil %>
+        <% if Item.exists?(asin: item.get('ASIN')) %>
+          <% amazon_item = Item.find_by(asin: item.get('ASIN')) %>
+        <% end %>
         <div class="action clearfix">
-          <%= link_to "" , ownerships_path(asin: item.get('ASIN') , type: "Want") ,
-                      :class => "want-#{item.get('ASIN')} btn-want btn btn-danger btn-sm want",
-                      :remote => true,
-                      :method => :post %>
-          <%= link_to "" , ownerships_path(asin: item.get('ASIN') , type: "Have") ,
-                      :class => "have-#{item.get('ASIN')} btn-have btn btn-warning btn-sm have",
-                      :remote => true,
-                      :method => :post %>
+          <%# want %>
+          <% if !amazon_item.blank? && current_user.want?(amazon_item) %>
+            <%= link_to "" , ownership_path( current_user.wants.find_by(:item_id => amazon_item.id) , 
+                            item_id: amazon_item.id , type: "Want") ,
+                        :class => "want-#{amazon_item.id} btn-want btn btn-warning btn-sm wanted",
+                        :remote => true,
+                        :method => :delete %> 
+          <% else %>
+            <%= link_to "" , ownerships_path(asin: item.get('ASIN') , type: "Want") ,
+                        :class => "want-#{item.get('ASIN')} btn-want btn btn-danger btn-sm want",
+                        :remote => true,
+                        :method => :post %>
+          <% end %>
+
+          <%# have %>
+          <% if !amazon_item.blank? && current_user.have?(amazon_item) %>
+            <%= link_to "" , ownership_path( current_user.haves.find_by(:item_id => amazon_item.id) , 
+                            item_id: amazon_item.id , type: "Have") ,
+                        :class => "have-#{amazon_item.id} btn-have btn btn-warning btn-sm haved",
+                        :remote => true,
+                        :method => :delete %> 
+          <% else %>
+            <%= link_to "" , ownerships_path(asin: item.get('ASIN') , type: "Have") ,
+                        :class => "have-#{item.get('ASIN')} btn-have btn btn-warning btn-sm have",
+                        :remote => true,
+                        :method => :post %>
+          <% end %>
         </div>
       </div>
     <% end %>

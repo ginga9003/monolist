@@ -23,14 +23,6 @@ class User < ActiveRecord::Base
   has_many :haves , class_name: "Have", foreign_key: "user_id", dependent: :destroy
   has_many :have_items ,through: :haves, source: :item
 
-  # アイテムをWantしているユーザ一覧
-  has_many :wants , class_name: "Want", foreign_key: "item_id", dependent: :destroy
-  has_many :want_users ,through: :wants, source: :user
-  
-  # アイテムをHaveしているユーザ一覧
-  has_many :haves , class_name: "Have", foreign_key: "item_id", dependent: :destroy
-  has_many :have_users ,through: :haves, source: :user
-
   # 他のユーザーをフォローする
   def follow(other_user)
     following_relationships.create(followed_id: other_user.id)
@@ -44,22 +36,33 @@ class User < ActiveRecord::Base
     following_users.include?(other_user)
   end
 
-  ## TODO 実装
+  # Have登録
   def have(item)
+    haves.create(item_id: item.id)
   end
 
+  # Have解除
   def unhave(item)
+    haves.find_by(item_id: item.id).destroy
   end
 
+  # ユーザがHaveしてるかどうか
   def have?(item)
+    have_items.include?(item)
   end
 
+  # Want登録
   def want(item)
+    wants.create(item_id: item.id)
   end
 
+  # Want解除
   def unwant(item)
+    wants.find_by(item_id: item.id).destroy
   end
 
+  # ユーザがWantしてるかどうか
   def want?(item)
+    want_items.include?(item)
   end
 end
