@@ -5,9 +5,10 @@
         <div class="image">
           <div class="img-wrap">
             <% #TODO 商品画像 %>
-            <% image_url = "no-image.png" %>
-            <% if !item.get('LargeImage/URL').blank? %>
+            <% unless item.get('LargeImage/URL').blank? %>
               <% image_url = item.get('LargeImage/URL') %>
+            <% else %>
+              <% image_url = "no-image.png" %>
             <% end %>
             <%= image_tag(image_url , alt: item.get('ItemAttributes/Title')) %>
           </div>
