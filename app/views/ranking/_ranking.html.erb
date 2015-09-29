@@ -1,12 +1,12 @@
 <div class="container">
   <div class="container-inner inner-default">
     <div class="row">
-    <% rank_items.each_with_index do |(key, value), i| %>
+    <% rank_items.each do |(key, items)| %>
     <% rank_item = Item.find(key) %>
       <div class="col-md-3">
         <div class="item-box">
           <div class="detail">
-            <div class="text-center f15em" style="padding: 5px 0;"><%= h(i + 1) %>位</div>
+            <div class="text-center f15em" style="padding: 5px 0;"><%= h(items['rank']) %>位</div>
           </div>
           <div class="image">
             <div class="img-wrap">
@@ -23,7 +23,7 @@
           </div>
           <% if logged_in? %>
           <div class="detail text-center">
-            <%= value %>
+            <%= items['count'] %>
             <% if type == 'Have' %>
             人が持っています。
             <% elsif type == 'Want' %>
