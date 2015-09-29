@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="container-inner inner-default">
+    <div class="row">
+    <% rank_items.each_with_index do |(key, value), i| %>
+    <% rank_item = Item.find(key) %>
+      <div class="col-md-3">
+        <div class="item-box">
+          <div class="detail">
+            <div class="text-center f15em" style="padding: 5px 0;"><%= h(i + 1) %>位</div>
+          </div>
+          <div class="image">
+            <div class="img-wrap">
+              <% unless rank_item.large_image.blank? %>
+                <% image_url = rank_item.large_image %>
+              <% else %>
+                <% image_url = "no-image.png" %>
+              <% end %>
+              <%= image_tag(image_url , alt: rank_item.title) %>
+            </div>
+          </div>
+          <div class="detail2" style="padding: 15px;">
+            <%= rank_item.title %>
+          </div>
+          <% if logged_in? %>
+          <div class="detail text-center">
+            <%= value %>
+            <% if type == 'Have' %>
+            人が持っています。
+            <% elsif type == 'Want' %>
+            人が欲しがっています。
+            <% end %>
+          </div>
+          <% end %>
+          <div class="detail text-center">
+            <%= link_to(image_tag("amazon-button.png", { alt: "Amazon詳細ページへ" }), rank_item.detail_page_url, { target: "_blank" }) %>
+          </div>
+          <% if logged_in? %>
+          <div class="action-rank clearfix">
+            <%# want %>
+            <% if current_user.want?(rank_item) %>
+              <%= link_to "" , ownership_path( current_user.wants.find_by(:item_id => rank_item.id) , 
+                              item_id: rank_item.id , type: "Want") ,
+                          :class => "want-#{rank_item.id} btn-want btn btn-warning btn-sm wanted",
+                          :remote => true,
+                          :method => :delete %> 
+            <% else %>
+              <%= link_to "" , ownerships_path(asin: rank_item.asin , type: "Want") ,
+                          :class => "want-#{rank_item.asin} btn-want btn btn-danger btn-sm want",
+                          :remote => true,
+                          :method => :post %>
+            <% end %>
+      
+            <%# have %>
+            <% if current_user.have?(rank_item) %>
+              <%= link_to "" , ownership_path( current_user.haves.find_by(:item_id => rank_item.id) , 
+                              item_id: rank_item.id , type: "Have") ,
+                          :class => "have-#{rank_item.id} btn-have btn btn-warning btn-sm haved",
+                          :remote => true,
+                          :method => :delete %> 
+            <% else %>
+              <%= link_to "" , ownerships_path(asin: rank_item.asin , type: "Have") ,
+                          :class => "have-#{rank_item.asin} btn-have btn btn-warning btn-sm have",
+                          :remote => true,
+                          :method => :post %>
+            <% end %>
+            
+            <% unless current_page?(rank_item) %>
+              <%= link_to "詳細" , rank_item , class: "btn btn-info btn-sm" %>
+            <% end %>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>

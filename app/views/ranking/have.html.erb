@@ -1,0 +1,5 @@
+<% content_for :head do %>
+  <title>Have ranking - monolist</title>
+  <meta name="description" content="Haveのランキングページ。みんなの欲しいモノ、持ってるモノを表示しています。" />
+<% end %>
+<%= render 'ranking', { rank_items: @rank_items, type: "Have" } %>
