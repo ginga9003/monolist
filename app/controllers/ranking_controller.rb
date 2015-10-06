@@ -5,6 +5,9 @@ class RankingController < ApplicationController
     #SELECT item_id, COUNT(id) AS count FROM ownerships WHERE type = 'Have' GROUP BY item_id ORDER BY count(id) DESC LIMIT 10;
     @rank_items = Have.rank_items(10)
     @rank_items = rank(@rank_items)
+    # code review    
+#    ids = Have.group(:item_id).order('count_item_id desc').limit(10).count(:item_id).keys
+#    @items = Item.find(ids).sort_by{|o| ids.index(o.id)}
   end
   
   # Wantランキング取得
@@ -12,6 +15,10 @@ class RankingController < ApplicationController
     #SELECT item_id, COUNT(id) AS count FROM ownerships WHERE type = 'Want' GROUP BY item_id ORDER BY count(id) DESC LIMIT 10;
     @rank_items = Want.rank_items(10)
     @rank_items = rank(@rank_items)
+    
+    # code review
+#    ids = Want.group(:item_id).order('count_item_id desc').limit(10).count(:item_id).keys
+#    @items = Item.find(ids).sort_by{|o| ids.index(o.id)}
   end
   
   # ランク付け
